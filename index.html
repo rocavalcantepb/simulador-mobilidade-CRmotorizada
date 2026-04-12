@@ -68,7 +68,7 @@ body { margin:0; font-family: Arial; text-align:center; }
 <div id="setup">
   <h3>Avaliação Cognitivo-Motora</h3>
   Nome/ID: <input id="patient" placeholder="Ex: P01"><br><br>
- <button onclick="alert('clicou')">▶️ Iniciar Avaliação</button>
+ <button onclick="startGame()">▶️ Iniciar Avaliação</button>
 </div>
 
 <div id="info" style="display:none;">
@@ -103,12 +103,25 @@ let startTime = 0;
 let startSession = 0;
 let patientID = "";
 
+<script>
 function startGame() {
-  alert("Botão funcionando!");
+  alert("entrei na função");
 
-  document.getElementById("setup").style.display = "none";
-  document.getElementById("game").style.display = "block";
+  const setup = document.getElementById("setup");
+  const game = document.getElementById("game");
+
+  console.log("setup:", setup);
+  console.log("game:", game);
+
+  if (!setup || !game) {
+    alert("Erro: elementos não encontrados");
+    return;
+  }
+
+  setup.style.display = "none";
+  game.style.display = "block";
 }
+</script>
   // movimento
 function move(dx, dy) {
   if (stopActive) {
