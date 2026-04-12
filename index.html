@@ -1,20 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <link rel="manifest" href="manifest.json">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
-}
-</script>
 body { margin:0; font-family: Arial; text-align:center; }
 
-#setup {
-  padding:10px;
-  background:#f0f0f0;
-}
+#setup { padding:10px; background:#f0f0f0; }
 
 #game {
   width:100%;
@@ -61,6 +55,7 @@ body { margin:0; font-family: Arial; text-align:center; }
 
 #info { margin:10px; }
 </style>
+
 </head>
 
 <body>
@@ -68,7 +63,7 @@ body { margin:0; font-family: Arial; text-align:center; }
 <div id="setup">
   <h3>Avaliação Cognitivo-Motora</h3>
   Nome/ID: <input id="patient" placeholder="Ex: P01"><br><br>
- <button onclick="startGame()">▶️ Iniciar Avaliação</button>
+  <button onclick="startGame()">▶️ Iniciar Avaliação</button>
 </div>
 
 <div id="info" style="display:none;">
@@ -95,6 +90,12 @@ body { margin:0; font-family: Arial; text-align:center; }
 <button onclick="downloadData()" style="display:none;" id="downloadBtn">📥 Baixar resultados</button>
 
 <script>
+
+// service worker
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+
 let x = 50, y = 50;
 let errors = 0;
 let reactions = [];
@@ -103,26 +104,18 @@ let startTime = 0;
 let startSession = 0;
 let patientID = "";
 
-<script>
 function startGame() {
-  alert("entrei na função");
+  patientID = document.getElementById("patient").value || "anonimo";
+  startSession = new Date();
 
-  const setup = document.getElementById("setup");
-  const game = document.getElementById("game");
-
-  console.log("setup:", setup);
-  console.log("game:", game);
-
-  if (!setup || !game) {
-    alert("Erro: elementos não encontrados");
-    return;
-  }
-
-  setup.style.display = "none";
-  game.style.display = "block";
+  document.getElementById("setup").style.display = "none";
+  document.getElementById("game").style.display = "block";
+  document.getElementById("controls").style.display = "block";
+  document.getElementById("info").style.display = "block";
+  document.getElementById("downloadBtn").style.display = "block";
 }
-</script>
-  // movimento
+
+// movimento
 function move(dx, dy) {
   if (stopActive) {
     errors++;
@@ -150,9 +143,7 @@ setInterval(() => {
 
   speechSynthesis.speak(new SpeechSynthesisUtterance("Pare"));
 
-  setTimeout(() => {
-    stopActive = false;
-  }, 2000);
+  setTimeout(() => stopActive = false, 2000);
 
 }, 7000);
 
@@ -220,7 +211,9 @@ function downloadData() {
 
   let csv = "paciente,inicio,fim,tempo_medio_ms,erros\n";
 
-  let avg = reactions.length ? Math.round(reactions.reduce((a,b)=>a+b,0)/reactions.length) : 0;
+  let avg = reactions.length
+    ? Math.round(reactions.reduce((a,b)=>a+b,0)/reactions.length)
+    : 0;
 
   csv += ${patientID},${startSession.toISOString()},${endSession.toISOString()},${avg},${errors}\n\n;
 
@@ -238,6 +231,7 @@ function downloadData() {
   a.download = avaliacao_${patientID}.csv;
   a.click();
 }
+
 </script>
 
 </body>
