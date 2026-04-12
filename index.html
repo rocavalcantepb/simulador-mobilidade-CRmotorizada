@@ -104,17 +104,12 @@ let startSession = 0;
 let patientID = "";
 
 function startGame() {
-  patientID = document.getElementById("patient").value || "anonimo";
-  startSession = new Date();
+  alert("Botão funcionando!");
 
   document.getElementById("setup").style.display = "none";
   document.getElementById("game").style.display = "block";
-  document.getElementById("controls").style.display = "block";
-  document.getElementById("info").style.display = "block";
-  document.getElementById("downloadBtn").style.display = "inline";
 }
-
-// movimento
+  // movimento
 function move(dx, dy) {
   if (stopActive) {
     errors++;
