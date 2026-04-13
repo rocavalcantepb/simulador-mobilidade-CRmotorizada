@@ -92,6 +92,9 @@ body { margin:0; font-family: Arial; text-align:center; }
 <script>
 let x = 50, y = 50;
 let errors = 0;
+let reactions = [];
+let stopActive = false;
+let startTime = 0;
 
 function startGame() {
   document.getElementById("setup").style.display = "none";
@@ -101,6 +104,12 @@ function startGame() {
 }
 
 function move(dx, dy) {
+  if (stopActive) {
+    errors++;
+    updateErrors();
+    return;
+  }
+
   x += dx;
   y += dy;
 
@@ -114,9 +123,37 @@ function move(dx, dy) {
 function checkCollision() {
   if (x > 120 && x < 180 && y > 170 && y < 240) {
     errors++;
-    document.getElementById("errors").innerText = errors;
+    updateErrors();
   }
 }
+
+function updateErrors() {
+  document.getElementById("errors").innerText = errors;
+}
+
+// comando sonoro
+setInterval(() => {
+  stopActive = true;
+  startTime = Date.now();
+
+  speechSynthesis.speak(new SpeechSynthesisUtterance("Pare"));
+
+  setTimeout(() => stopActive = false, 2000);
+
+}, 7000);
+
+// reação
+document.addEventListener("keydown", () => {
+  if (stopActive) {
+    let reaction = Date.now() - startTime;
+    reactions.push(reaction);
+
+    let avg = reactions.reduce((a,b)=>a+b,0)/reactions.length;
+    document.getElementById("avgReaction").innerText = Math.round(avg);
+
+    stopActive = false;
+  }
+});
 </script>
 
 </body>
