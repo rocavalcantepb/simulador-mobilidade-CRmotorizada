@@ -90,11 +90,21 @@ body { margin:0; font-family: Arial; text-align:center; }
 <button onclick="downloadData()" style="display:none;" id="downloadBtn">📥 Baixar resultados</button>
 
 <script>
-function startGame() {
-  alert("FUNCIONOU");
+let x = 50, y = 50;
 
+function startGame() {
   document.getElementById("setup").style.display = "none";
   document.getElementById("game").style.display = "block";
+  document.getElementById("controls").style.display = "block";
+}
+
+function move(dx, dy) {
+  x += dx;
+  y += dy;
+
+  let wc = document.getElementById("wheelchair");
+  wc.style.left = x + "px";
+  wc.style.top = y + "px";
 }
 </script>
 
